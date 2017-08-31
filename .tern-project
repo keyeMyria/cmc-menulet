@@ -1,4 +1,23 @@
 {
-  "ecmaVersion": 6,
-  "libs": []
+  "ecmaVersion": "7",
+  "libs": [
+    "browser"
+  ],
+  "plugins": {
+    "node": {
+      "dontLoad": "",
+      "load": "",
+      "modules": ""
+    },
+    "node_resolve": {},
+    "modules": {
+      "dontLoad": "",
+      "load": "",
+      "modules": ""
+    },
+    "es_modules": {},
+    "commonjs": {}
+  },
+  "loadEagerly": [],
+  "dontLoad": []
 }

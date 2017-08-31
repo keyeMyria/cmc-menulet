@@ -1,10 +1,9 @@
 const path = require('path')
 const electron = require('electron')
+const menubar = require('menubar')
 const defaultMenu = require('electron-default-menu')
 
 const { app, shell, BrowserWindow, Menu } = electron
-
-let win
 
 if (process.env.NODE_ENV === 'development') {
   const webpack = require('webpack')
@@ -23,22 +22,21 @@ if (process.env.NODE_ENV === 'development') {
 app.on('ready', () => {
   Menu.setApplicationMenu(Menu.buildFromTemplate(defaultMenu(app, shell)))
 
-  const { screen } = electron
+  const { screen, ipcMain } = electron
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
 
-  win = new BrowserWindow({ width, height })
-
+  let index = `file://${__dirname}/dist/renderer.html`
   if (process.env.NODE_ENV === 'development') {
-    win.loadURL('http://localhost:8080/renderer.html')
-  } else {
-    win.loadURL(`file://${__dirname}/dist/renderer.html`)
+    index = 'http://localhost:8080/renderer.html'
   }
+  const mb = menubar({ index, width: 500, height: height * 0.75, preloadWindow: true, webPreferences: { webSecurity: false } })
+  mb.on('ready', () => {
+    if (process.env.DEBUG || process.env.NODE_ENV === 'development') {
+      mb.window.webContents.openDevTools()
+    }
+  })
 
-  if (process.env.DEBUG || process.env.NODE_ENV === 'development') {
-    win.webContents.openDevTools()
-  }
-
-  win.on('closed', () => {
-    win = null
+  ipcMain.on('set-title', (event, arg) => {
+    mb.tray.setTitle(arg)
   })
 })

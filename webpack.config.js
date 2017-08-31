@@ -10,7 +10,9 @@ module.exports = {
   devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval',
   entry: [
     'source-map-support/register',
-    './src/index.css',
+    'tachyons/css/tachyons.css',
+    'tachyons-open-color',
+    'cryptocoins-icons/webfont/cryptocoins.css',
     './src/index.jsx',
   ],
   plugins: [
@@ -18,7 +20,7 @@ module.exports = {
       loaders: ['babel-loader'],
       threads: 4,
     }),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.ExternalsPlugin('commonjs', Object.keys(dependencies)),
     new webpack.NamedModulesPlugin(),
     new webpack.EnvironmentPlugin({ NODE_ENV: 'development', CHANNEL: 'web' }),
@@ -45,7 +47,7 @@ module.exports = {
         test: /\.css/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: ['css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]', 'postcss-loader'],
+          use: 'css-loader',
         }),
       },
       {
@@ -59,6 +61,10 @@ module.exports = {
       {
         test: /\.json$/,
         use: 'json-loader',
+      },
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        use: 'file-loader',
       },
     ],
   },

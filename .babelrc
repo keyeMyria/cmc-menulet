@@ -4,6 +4,7 @@
     "closure-elimination",
     "transform-export-extensions",
     "transform-decorators-legacy",
+    "transform-async-to-generator",
     "autobind-class-methods",
     "transform-class-properties",
     "syntax-trailing-function-commas",
