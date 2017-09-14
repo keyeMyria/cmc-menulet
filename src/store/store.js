@@ -83,7 +83,7 @@ export default types.model('Store', {
       self.isFetching = value
     },
     setTickers(tickers) {
-      tickers.map(self.mergeTicker).forEach((ticker) => { self.tickers.set(ticker.id, ticker) })
+      tickers.map(self.mergeTicker).forEach((ticker) => { self.tickers.put(ticker) })
     },
     setBaseCurrency(value) {
       self.baseCurrency = value
